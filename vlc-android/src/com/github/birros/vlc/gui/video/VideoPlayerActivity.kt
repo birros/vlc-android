@@ -100,6 +100,10 @@ import com.github.birros.vlc.util.*
 import com.github.birros.vlc.viewmodels.PlaylistModel
 import java.lang.Runnable
 
+// NanoHTTPD
+import com.github.birros.vlc.server.Server
+import java.io.IOException
+
 @Suppress("DEPRECATION")
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -230,6 +234,9 @@ open class VideoPlayerActivity : AppCompatActivity(), IPlaybackSettingsControlle
 
     private lateinit var playToPause: AnimatedVectorDrawableCompat
     private lateinit var pauseToPlay: AnimatedVectorDrawableCompat
+
+    // NanoHTTPD
+    private var server: Server? = null
 
     internal val isPlaybackSettingActive: Boolean
         get() = playbackSetting != IPlaybackSettingsController.DelayState.OFF
@@ -699,6 +706,10 @@ open class VideoPlayerActivity : AppCompatActivity(), IPlaybackSettingsControlle
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onStop() {
         super.onStop()
+
+        // NanoHTTPD
+        server?.destroy()
+
         PlaybackService.service.removeObservers(this)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceReceiver)
 
@@ -2358,6 +2369,23 @@ open class VideoPlayerActivity : AppCompatActivity(), IPlaybackSettingsControlle
                 if (!TextUtils.isEmpty(path)) service.addSubtitleTrack(path!!, true)
                 if (intent.hasExtra(PLAY_EXTRA_ITEM_TITLE))
                     itemTitle = extras.getString(PLAY_EXTRA_ITEM_TITLE)
+                
+                // NanoHTTPD
+                val PLAY_EXTRA_SERVER_PORT     = "server_port"
+                val PLAY_EXTRA_SERVER_PASSWORD = "server_password"
+
+                if (
+                    intent.hasExtra(PLAY_EXTRA_SERVER_PORT) &&
+                    intent.hasExtra(PLAY_EXTRA_SERVER_PASSWORD)
+                ) {
+                    val serverPort     = extras.getInt(PLAY_EXTRA_SERVER_PORT)
+                    val serverPassword = extras.getString(PLAY_EXTRA_SERVER_PASSWORD)
+
+                    try {
+                        server?.destroy()
+                        server = Server(service?.mediaplayer, serverPort, serverPassword)
+                    } catch(e: IOException) {}
+                }
             }
             if (startTime == 0L && savedTime > 0L) startTime = savedTime
             val restorePlayback = hasMedia && currentMedia!!.uri == videoUri
