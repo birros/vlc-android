@@ -46,12 +46,13 @@ Notes:
 * Docker can freeze during build so restart instance to build apk.
 
 ```shell
+$ export VLC_ANDROID_BUILD_CACHE=$HOME/vlc-android-build-cache
 $ docker run --rm -ti \
     -w /sources \
     -v $PWD:/sources \
-    -v $HOME/vlc-android-build-cache/home:/home/videolan \
-    -v $HOME/vlc-android-build-cache/build-tools:/sdk/android-sdk-linux/build-tools \
-    -v $HOME/vlc-android-build-cache/platforms:/sdk/android-sdk-linux/platforms \
+    -v $VLC_ANDROID_BUILD_CACHE/home:/home/videolan \
+    -v $VLC_ANDROID_BUILD_CACHE/build-tools:/sdk/android-sdk-linux/build-tools \
+    -v $VLC_ANDROID_BUILD_CACHE/platforms:/sdk/android-sdk-linux/platforms \
     registry.videolan.org:5000/vlc-debian-android:20190507015459 bash
 $ ./compile.sh --init
 $ ./gradlew assembleDebug
