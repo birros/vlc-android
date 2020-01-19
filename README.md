@@ -47,6 +47,7 @@ Notes:
 
 ```shell
 $ docker run --rm -ti \
+    -w /sources \
     -v $PWD:/sources \
     -v $HOME/vlc-android-build-cache/home:/home/videolan \
     -v $HOME/vlc-android-build-cache/build-tools:/sdk/android-sdk-linux/build-tools \
