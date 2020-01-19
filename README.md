@@ -24,7 +24,7 @@ $ export NEW_APP_ID=com.github.birros.vlc
 $ export NEW_APP_NAME="VLCWithServer"
 $ export VLC_ANDROID_DIR=$PWD
 $ # replace applicationId in files
-$ LC_ALL=C find . -not -wholename "./.git*" -type f -exec sed -i '' s/org\\.videolan\\.vlc/$NEW_APP_ID/ {} +
+$ LC_ALL=C find . -not -wholename "./.git*" -not -wholename "./README.md" -type f -exec sed -i '' s/org\\.videolan\\.vlc/$NEW_APP_ID/ {} +
 $ # rename files depending on new applicationId
 $ go run .fork/rename-files.go $VLC_ANDROID_DIR $NEW_APP_ID
 $ # rename a file
