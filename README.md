@@ -21,7 +21,7 @@ $ git clone --depth=1 -b 3.2.x https://github.com/birros/vlc-android.git
 
 ```shell
 $ export NEW_APP_ID=com.github.birros.vlc
-$ export NEW_APP_NAME="VLC (UC)"
+$ export NEW_APP_NAME="VLCWithServer"
 $ export VLC_ANDROID_DIR=$PWD
 $ # replace applicationId in files
 $ LC_ALL=C find . -not -wholename "./.git*" -type f -exec sed -i '' s/org\\.videolan\\.vlc/$NEW_APP_ID/ {} +
