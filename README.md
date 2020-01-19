@@ -1,53 +1,63 @@
-# VLC for Android
-This is the official **Android** port of [VLC](https://videolan.org/vlc/).
+# VLC for Android (with http server)
 
-VLC on Android plays all the same files as the classical version of VLC, and features a media database
-for Audio and Video files and stream.
+Fork of [VLC for Android](https://github.com/videolan/vlc-android) with http
+server to expose playing status.
 
-## License
-VLC for Android is licensed under GPLv2 (or later). Android libraries makes this, de facto, a GPLv3 application.
+---
 
-VLC engine *(libvlc)* for Android is licensed under LGPL.
+## How to fork VLC for Android
 
-## Build
+This doc describe how to fork vlc and don't collide with official vlc build on
+Android.
 
-You will need a recent Linux distribution to build VLC.
-It should work with Windows 10, and macOS, but there is no official support for this.
+## Get resources
 
-Check our [AndroidCompile wiki page](https://wiki.videolan.org/AndroidCompile/)
+```shell
+$ docker pull registry.videolan.org:5000/vlc-debian-android:20190507015459
+$ git clone --depth=1 -b 3.2.x https://github.com/birros/vlc-android.git
+```
 
-## Contribute
+## Change applicationId and app_name
 
-VLC is a libre and open source project, we welcome all contributions.
+```shell
+$ export NEW_APP_ID=com.github.birros.vlc
+$ export NEW_APP_NAME="VLC (UC)"
+$ export VLC_ANDROID_DIR=$PWD
+$ # replace applicationId in files
+$ LC_ALL=C find . -not -wholename "./.git*" -type f -exec sed -i '' s/org\\.videolan\\.vlc/$NEW_APP_ID/ {} +
+$ # rename files depending on new applicationId
+$ go run .fork/rename-files.go $VLC_ANDROID_DIR $NEW_APP_ID
+$ # rename a file
+$ mv vlc-android/assets/schemas/org.videolan.vlc.database.MediaDatabase vlc-android/assets/schemas/$NEW_APP_ID.database.MediaDatabase
+$ # change app_name
+$ sed -i "" "s/VLC/$NEW_APP_NAME/" vlc-android/res/values/strings.xml
+```
 
-Just respect our [Code of Conduct](https://wiki.videolan.org/CoC/).
+## Remove applicationId suffix of debug build (optional)
 
-### Pull requests
+```shell
+$ sed -i '' 's/applicationIdSuffix ".debug"/\/\/ applicationIdSuffix ".debug"/' vlc-android/build.gradle
+```
 
-Pull requests can be proposed here or on our [github mirror](https://github.com/videolan/vlc-android).
+## Build debug apk
 
-### Sending patches to the mailing list
+Notes:
+* First build take around 20mn on Macbook.
+* Docker can freeze during build so restart instance to build apk.
 
-Check [our wiki page on how to send patches](https://wiki.videolan.org/Sending_Patches_VLC/)
-Send them to the android mailing list: android@videolan.org, not vlc-devel.
+```shell
+$ docker run --rm -ti \
+    -v $PWD:/sources \
+    -v $HOME/vlc-android-build-cache/home:/home/videolan \
+    -v $HOME/vlc-android-build-cache/build-tools:/sdk/android-sdk-linux/build-tools \
+    -v $HOME/vlc-android-build-cache/platforms:/sdk/android-sdk-linux/platforms \
+    registry.videolan.org:5000/vlc-debian-android:20190507015459 bash
+$ ./compile.sh --init
+$ ./gradlew assembleDebug
+```
 
-## Issues and feature requests
+## Resources
 
-VLC for Android bugtracker is hosted on [VideoLAN gitlab](https://code.videolan.org/videolan/vlc-android/issues)
-Please look for existing issues and provide as much useful details as you can (e.g. vlc app version, device and Android version)
-
-### Translations:
-You can help improving translations too by joining the [transifex vlc project](https://www.transifex.com/yaron/vlc-trans/dashboard/)
-
-## LibVLC
-You can use our LibVLC module to power your own Android media player.
-Have a look at our  [sample codes](https://code.videolan.org/videolan/libvlc-android-samples).
-
-## support
-
-- Android mailing list: android@videolan.org
-- bugtracker: https://code.videolan.org/videolan/vlc-android/issues
-- IRC: *#videolan* channel on [freenode](http://freenode.net/)
-- VideoLAN forum: https://forum.videolan.org/
-- G+ community: https://plus.google.com/u/0/communities/113615952107012455563
-
+* https://code.videolan.org/videolan/docker-images/blob/ee87fcf18c22c33b6998275d80dd158949e0a847/vlc-debian-android/Dockerfile
+* https://code.videolan.org/videolan/vlc-android/blob/3.2.6/.gitlab-ci.yml#L9
+* https://code.videolan.org/videolan/vlc-android/blob/3.2.6/.gitlab-ci.yml#L59-60
