@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="?attr/background_default"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="org.videolan.vlc.gui.onboarding.OnboardingActivity">
+    tools:context="com.github.birros.vlc.gui.onboarding.OnboardingActivity">
 
-    <org.videolan.vlc.gui.view.NonSwipeableViewPager
+    <com.github.birros.vlc.gui.view.NonSwipeableViewPager
         android:id="@+id/pager"
         android:layout_width="0dp"
         android:layout_height="0dp"

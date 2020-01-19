@@ -9,11 +9,11 @@
 
         <variable
                 name="progress"
-                type="androidx.lifecycle.LiveData&lt;org.videolan.vlc.media.Progress>"/>
+                type="androidx.lifecycle.LiveData&lt;com.github.birros.vlc.media.Progress>"/>
 
         <variable
                 name="player"
-                type="org.videolan.vlc.gui.video.VideoPlayerActivity"/>
+                type="com.github.birros.vlc.gui.video.VideoPlayerActivity"/>
     </data>
 
 

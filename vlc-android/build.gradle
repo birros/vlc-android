@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.videolan.vlc"
+        applicationId "com.github.birros.vlc"
 
         resValue "string", "build_time", buildTime()
         resValue "string", "build_host", hostName()
@@ -132,7 +132,7 @@ android {
             matchingFallbacks = ['release']
         }
         debug {
-            applicationIdSuffix ".debug"
+            // applicationIdSuffix ".debug"
             jniDebuggable true
             multiDexEnabled true
             buildConfigField "boolean", "BETA", "false"

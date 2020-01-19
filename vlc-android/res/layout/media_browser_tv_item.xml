@@ -55,11 +55,11 @@
 
         <variable
             name="holder"
-            type="org.videolan.vlc.gui.tv.MediaTvItemAdapter.AbstractMediaItemViewHolder" />
+            type="com.github.birros.vlc.gui.tv.MediaTvItemAdapter.AbstractMediaItemViewHolder" />
 
     </data>
 
-    <org.videolan.vlc.gui.tv.FocusableConstraintLayout
+    <com.github.birros.vlc.gui.tv.FocusableConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,10 +75,10 @@
             vlc:elevation="1dp">
 
 
-        <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+        <!-- Image loading is handled by com.github.birros.vlc.gui.helpers.ImageLoader.loadImage() -->
 
 
-        <org.videolan.vlc.gui.view.FadableImageView
+        <com.github.birros.vlc.gui.view.FadableImageView
                 android:id="@+id/media_cover"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -192,5 +192,5 @@
                 vlc:layout_constraintHorizontal_bias="0.5"/>
 
 
-    </org.videolan.vlc.gui.tv.FocusableConstraintLayout>
+    </com.github.birros.vlc.gui.tv.FocusableConstraintLayout>
 </layout>

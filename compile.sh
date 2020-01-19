@@ -409,8 +409,8 @@ if [ "$RUN" = 1 ]; then
     fi
     adb wait-for-device
     if [ "$RELEASE" = 1 ]; then
-        adb shell am start -n org.videolan.vlc/org.videolan.vlc.StartActivity $EXTRA
+        adb shell am start -n com.github.birros.vlc/org.videolan.vlc.StartActivity $EXTRA
     else
-        adb shell am start -n org.videolan.vlc.debug/org.videolan.vlc.StartActivity $EXTRA
+        adb shell am start -n com.github.birros.vlc.debug/org.videolan.vlc.StartActivity $EXTRA
     fi
 fi

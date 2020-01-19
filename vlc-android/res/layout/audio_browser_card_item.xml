@@ -31,7 +31,7 @@
 
         <variable
             name="holder"
-            type="org.videolan.vlc.gui.audio.AudioBrowserAdapter.MediaItemCardViewHolder" />
+            type="com.github.birros.vlc.gui.audio.AudioBrowserAdapter.MediaItemCardViewHolder" />
 
         <variable
                 name="scaleType"
@@ -56,9 +56,9 @@
             android:minHeight="@dimen/audio_browser_item_size">
 
 
-            <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+            <!-- Image loading is handled by com.github.birros.vlc.gui.helpers.ImageLoader.loadImage() -->
 
-            <org.videolan.vlc.gui.view.FadableImageView
+            <com.github.birros.vlc.gui.view.FadableImageView
                     android:id="@+id/media_cover"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -78,7 +78,7 @@
 
             <!-- TextView must be set to singleLine
                 see https://code.google.com/p/android/issues/detail?id=33868 -->
-            <org.videolan.vlc.gui.view.FadableImageView
+            <com.github.birros.vlc.gui.view.FadableImageView
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
