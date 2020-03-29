@@ -1,17 +1,13 @@
 package com.github.birros.vlc.server;
     
+import fi.iki.elonen.NanoHTTPD;
+import fi.iki.elonen.NanoHTTPD.Response.Status;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
-import org.json.JSONObject;
 import org.json.JSONException;
-
+import org.json.JSONObject;
 import org.videolan.libvlc.MediaPlayer;
-import org.videolan.libvlc.Media;
-
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.NanoHTTPD.Response.Status;
 
 public class Server extends NanoHTTPD {
     private MediaPlayer mMediaPlayer = null;
@@ -22,10 +18,6 @@ public class Server extends NanoHTTPD {
         mMediaPlayer = mediaPlayer;
         mPassword = password;
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
-    }
-
-    public void destroy() {
-        stop();
     }
 
     private Response basicAuth(IHTTPSession session, String username, String password) {
@@ -57,18 +49,37 @@ public class Server extends NanoHTTPD {
         }
 
         if (mMediaPlayer != null) {
-            long position = mMediaPlayer.getTime();
-            long duration = mMediaPlayer.getLength();
-            Media media = mMediaPlayer.getMedia();
-            String uri = media != null ? media.getUri().toString() : "";
+            float position = mMediaPlayer.getPosition(); // [0-1] percent
+            long duration = mMediaPlayer.getLength(); // ms
+
+            // length
+            int length = 0;
+            if (duration > 0) {
+                length = Math.round(duration / 1000);
+            }
+
+            // state
+            String state = "";
+            int stateNum = mMediaPlayer.getPlayerState();
+            switch (stateNum) {
+                case 3:
+                    state = "playing";
+                    break;
+                case 4:
+                    state = "paused";
+                    break;
+                case 5:
+                    state = "stopped";
+                    break;
+            }
 
             try {
                 JSONObject sampleObject = new JSONObject();
-                sampleObject.put("position", position);
-                sampleObject.put("duration", duration);
-                sampleObject.put("uri", uri);
+                sampleObject.put("position", position); // [0-1] percent
+                sampleObject.put("state", state);
+                sampleObject.put("length", length); // seconds
                 
-                return newFixedLengthResponse(sampleObject.toString(2));
+                return newFixedLengthResponse(Status.OK, "application/json", sampleObject.toString(2));
             } catch(JSONException e) {
                 return newFixedLengthResponse(e.toString());
             }

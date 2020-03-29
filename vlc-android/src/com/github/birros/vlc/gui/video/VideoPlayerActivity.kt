@@ -708,7 +708,7 @@ open class VideoPlayerActivity : AppCompatActivity(), IPlaybackSettingsControlle
         super.onStop()
 
         // NanoHTTPD
-        server?.destroy()
+        server?.stop()
 
         PlaybackService.service.removeObservers(this)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(serviceReceiver)
@@ -2382,7 +2382,7 @@ open class VideoPlayerActivity : AppCompatActivity(), IPlaybackSettingsControlle
                     val serverPassword = extras.getString(PLAY_EXTRA_SERVER_PASSWORD)
 
                     try {
-                        server?.destroy()
+                        server?.stop()
                         server = Server(service?.mediaplayer, serverPort, serverPassword)
                     } catch(e: IOException) {}
                 }
